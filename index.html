@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baroque Music Generation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-container h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header-container p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .query-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .query-image {
+            max-width: 100%; /* Adjust as needed */
+            height: auto; /* Maintain aspect ratio */
+            margin-bottom: 20px; /* Space below the image */
+        }
+
+        .choice-wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 20px;
+        }
+
+        .choice-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .choice-image {
+            width: 100%; /* Adjusted to fill the grid cell */
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .choice-audio {
+            margin-bottom: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header-container">
+        <h1>Baroque Music Generation</h1>
+        <p>A webpage created to display melodic samples infilled by deep learning models, that were prompted with Baroque musical pieces.</p>
+    </div>
+
+    <div class="query-container" id="query-container">
+        <!-- Query content will be inserted here -->
+    </div>
+
+    <form id="survey-form">
+        <div class="choice-wrapper" id="choice-wrapper">
+            <!-- Choices will be inserted here -->
+        </div>
+    </form>
+
+    <script>
+        // Array of objects with multimedia file paths
+        const queriesAndChoices = [
+            {
+                title: "Italian Concerto in F Major: Mvt. 1 - J. S. Bach",
+                queryImage: "media/real/bach.png",
+                queryAudio: "media/real/bach.wav",
+                choices: [
+                    { img: "media/smd/ns1/bach.png", audio: "media/smd/ns1/bach.wav", label: "Diffusion Model 1" },
+                    { img: "media/smd/ns2/bach.png", audio: "media/smd/ns2/bach.wav", label: "Diffusion Model 2" },
+                    { img: "media/smd/ns3/bach.png", audio: "media/smd/ns3/bach.wav", label: "Diffusion Model 3" },
+                    { img: "media/bert/s2/bach.png", audio: "media/bert/s2/bach.wav", label: "Transformer Model 1" },
+                    { img: "media/bert/s4/bach.png", audio: "media/bert/s4/bach.wav", label: "Transformer Model 2" },
+                    { img: "media/bert/s8/bach.png", audio: "media/bert/s8/bach.wav", label: "Transformer Model 3" }
+                ]
+            },
+            {
+                title: "Sonata No. 1 in G Minor: 'Minuet: Affettuoso' - L. Giustini",
+                queryImage: "media/real/giustini.png",
+                queryAudio: "media/real/giustini.wav",
+                choices: [
+                    { img: "media/smd/ns1/giustini.png", audio: "media/smd/ns1/giustini.wav", label: "Diffusion Model 1" },
+                    { img: "media/smd/ns2/giustini.png", audio: "media/smd/ns2/giustini.wav", label: "Diffusion Model 2" },
+                    { img: "media/smd/ns3/giustini.png", audio: "media/smd/ns3/giustini.wav", label: "Diffusion Model 3" },
+                    { img: "media/bert/s2/giustini.png", audio: "media/bert/s2/giustini.wav", label: "Transformer Model 1" },
+                    { img: "media/bert/s4/giustini.png", audio: "media/bert/s4/giustini.wav", label: "Transformer Model 2" },
+                    { img: "media/bert/s8/giustini.png", audio: "media/bert/s8/giustini.wav", label: "Transformer Model 3" }
+                ]
+            },
+            {
+                title: "Suite in G Minor for Harpsichord: 'Passacaglia' - G. F. Handel",
+                queryImage: "media/real/handel.png",
+                queryAudio: "media/real/handel.wav",
+                choices: [
+                    { img: "media/smd/ns1/handel.png", audio: "media/smd/ns1/handel.wav", label: "Diffusion Model 1" },
+                    { img: "media/smd/ns2/handel.png", audio: "media/smd/ns2/handel.wav", label: "Diffusion Model 2" },
+                    { img: "media/smd/ns3/handel.png", audio: "media/smd/ns3/handel.wav", label: "Diffusion Model 3" },
+                    { img: "media/bert/s2/handel.png", audio: "media/bert/s2/handel.wav", label: "Transformer Model 1" },
+                    { img: "media/bert/s4/handel.png", audio: "media/bert/s4/handel.wav", label: "Transformer Model 2" },
+                    { img: "media/bert/s8/handel.png", audio: "media/bert/s8/handel.wav", label: "Transformer Model 3" }
+                ]
+            },
+            {
+                title: "Suite in G Major/G Minor: 'Les Sauvages' - J. P. Rameau",
+                queryImage: "media/real/rameau.png",
+                queryAudio: "media/real/rameau.wav",
+                choices: [
+                    { img: "media/smd/ns1/rameau.png", audio: "media/smd/ns1/rameau.wav", label: "Diffusion Model 1" },
+                    { img: "media/smd/ns2/rameau.png", audio: "media/smd/ns2/rameau.wav", label: "Diffusion Model 2" },
+                    { img: "media/smd/ns3/rameau.png", audio: "media/smd/ns3/rameau.wav", label: "Diffusion Model 3" },
+                    { img: "media/bert/s2/rameau.png", audio: "media/bert/s2/rameau.wav", label: "Transformer Model 1" },
+                    { img: "media/bert/s4/rameau.png", audio: "media/bert/s4/rameau.wav", label: "Transformer Model 2" },
+                    { img: "media/bert/s8/rameau.png", audio: "media/bert/s8/rameau.wav", label: "Transformer Model 3" }
+                ]
+            },
+            {
+                title: "Sonata in F Sharp Minor: 'Allegro' - D. Scarlatti",
+                queryImage: "media/real/scarlatti.png",
+                queryAudio: "media/real/scarlatti.wav",
+                choices: [
+                    { img: "media/smd/ns1/scarlatti.png", audio: "media/smd/ns1/scarlatti.wav", label: "Diffusion Model 1" },
+                    { img: "media/smd/ns2/scarlatti.png", audio: "media/smd/ns2/scarlatti.wav", label: "Diffusion Model 2" },
+                    { img: "media/smd/ns3/scarlatti.png", audio: "media/smd/ns3/scarlatti.wav", label: "Diffusion Model 3" },
+                    { img: "media/bert/s2/scarlatti.png", audio: "media/bert/s2/scarlatti.wav", label: "Transformer Model 1" },
+                    { img: "media/bert/s4/scarlatti.png", audio: "media/bert/s4/scarlatti.wav", label: "Transformer Model 2" },
+                    { img: "media/bert/s8/scarlatti.png", audio: "media/bert/s8/scarlatti.wav", label: "Transformer Model 3" }
+                ]
+            },
+            {
+                title: "Fantasia No. 2 in D Minor for Harpsichord: 'Presto' - G. P. Telemann",
+                queryImage: "media/real/telemann.png",
+                queryAudio: "media/real/telemann.wav",
+                choices: [
+                    { img: "media/smd/ns1/telemann.png", audio: "media/smd/ns1/telemann.wav", label: "Diffusion Model 1" },
+                    { img: "media/smd/ns2/telemann.png", audio: "media/smd/ns2/telemann.wav", label: "Diffusion Model 2" },
+                    { img: "media/smd/ns3/telemann.png", audio: "media/smd/ns3/telemann.wav", label: "Diffusion Model 3" },
+                    { img: "media/bert/s2/telemann.png", audio: "media/bert/s2/telemann.wav", label: "Transformer Model 1" },
+                    { img: "media/bert/s4/telemann.png", audio: "media/bert/s4/telemann.wav", label: "Transformer Model 2" },
+                    { img: "media/bert/s8/telemann.png", audio: "media/bert/s8/telemann.wav", label: "Transformer Model 3" }
+                ]
+            }
+        ];
+
+        function generateDisplay() {
+            const queryContainer = document.getElementById('query-container');
+
+            queriesAndChoices.forEach(({ title, queryImage, queryAudio, choices }) => {
+                // Insert query title, image, and audio
+                queryContainer.innerHTML += `
+                    <h2>${title}</h2>
+                    <img src="${queryImage}" class="query-image" alt="Query Image">
+                    <audio class="choice-audio" controls>
+                        <source src="${queryAudio}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
+
+                // Insert choices (images and audio)
+                const choiceWrapper = document.createElement('div');
+                choiceWrapper.classList.add('choice-wrapper');
+
+                choices.forEach(({ img, audio, label }) => {
+                    const choiceHTML = `
+                        <div class="choice-container">
+                            <p>${label}</p>
+                            <img src="${img}" class="choice-image" alt="Choice Image">
+                            <audio class="choice-audio" controls>
+                                <source src="${audio}" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    `;
+                    choiceWrapper.innerHTML += choiceHTML;
+                });
+
+                queryContainer.appendChild(choiceWrapper);
+            });
+        }
+
+        // Generate the display when the page loads
+        window.onload = generateDisplay;
+    </script>
+</body>
+</html>
+
+Multimedia
